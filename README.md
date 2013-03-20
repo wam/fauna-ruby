@@ -120,10 +120,13 @@ controllers, based on credentials in `config/fauna.yml`:
 development:
   email: taran@example.com
   password: secret
+  publisher_key: secret_key
 test:
   email: taran@example.com
   password: secret
 ```
+
+If a publisher key is specified, email and password may be omitted.
 
 Then, in `config/initializers/fauna.rb`:
 

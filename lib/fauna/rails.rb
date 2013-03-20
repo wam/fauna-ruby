@@ -26,12 +26,17 @@ if defined?(Rails)
           STDERR.puts ">> You can change this in config/fauna.yml or ~/.fauna.yml."
         end
 
-        self.root_connection = Connection.new(
-          :email => credentials["email"],
-          :password => credentials["password"],
-        :logger => Rails.logger)
+        if (credentials.has_key? "publisher_key")
+          publisher_key = credentials["publisher_key"]
+        else
+          self.root_connection = Connection.new(
+            :email => credentials["email"],
+            :password => credentials["password"],
+          :logger => Rails.logger)
 
-        publisher_key = root_connection.post("keys/publisher")["resource"]["key"]
+          publisher_key = root_connection.post("keys/publisher")["resource"]["key"]
+        end
+
         self.connection = Connection.new(publisher_key: publisher_key, logger: Rails.logger)
       else
         if !@silent
