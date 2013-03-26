@@ -126,7 +126,10 @@ test:
   password: secret
 ```
 
-If a publisher key is specified, email and password may be omitted.
+The publisher key takes precedence over email/password. If a publisher
+key is specified, email and password can be omitted. If a publisher
+key is not specified, a new one will be generated each time the app is
+started.
 
 Then, in `config/initializers/fauna.rb`:
 

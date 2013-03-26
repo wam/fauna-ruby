@@ -22,7 +22,7 @@ if defined?(Rails)
         end
 
         if !@silent
-          if (credentials.has_key? "publisher_key")
+          if credentials["publisher_key"]
             STDERR.puts ">> Using Fauna publisher key #{credentials["publisher_key"].inspect} for #{APP_NAME.inspect}."
           else
             STDERR.puts ">> Using Fauna account #{credentials["email"].inspect} for #{APP_NAME.inspect}."
@@ -31,7 +31,7 @@ if defined?(Rails)
           STDERR.puts ">> You can change this in config/fauna.yml or ~/.fauna.yml."
         end
 
-        if (credentials.has_key? "publisher_key")
+        if credentials["publisher_key"]
           publisher_key = credentials["publisher_key"]
         else
           self.root_connection = Connection.new(
