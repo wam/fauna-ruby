@@ -32,15 +32,19 @@ if defined?(Rails)
           STDERR.puts ">> You can change this in config/fauna.yml or ~/.fauna.yml."
         end
 
-        if credentials["publisher_key"]
-          publisher_key = credentials["publisher_key"]
-        else
+        if credentials["email"] && credentials["password"]
           self.root_connection = Connection.new(
             :email => credentials["email"],
             :password => credentials["password"],
           :logger => Rails.logger)
+        end
 
+        if credentials["publisher_key"]
+          publisher_key = credentials["publisher_key"]
+        else
           publisher_key = root_connection.post("keys/publisher")["resource"]["key"]
+          STDERR.puts ">> Creating Fauna publisher key #{publisher_key} for #{APP_NAME.inspect}."
+
         end
 
         self.connection = Connection.new(publisher_key: publisher_key, logger: Rails.logger)
