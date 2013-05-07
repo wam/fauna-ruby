@@ -142,6 +142,10 @@ module Fauna
       self.class.remove(ref, resource)
     end
 
+    def contains?(resource)
+      self.class.contains?(ref, resource)
+    end
+
     def self.add(ref, resource)
       resource = resource.ref if resource.respond_to?(:ref)
       Fauna::Client.post(ref, 'resource' => resource)
@@ -150,6 +154,17 @@ module Fauna
     def self.remove(ref, resource)
       resource = resource.ref if resource.respond_to?(:ref)
       Fauna::Client.delete(ref, 'resource' => resource)
+    end
+
+    def self.contains?(ref, resource)
+      if resource.persisted?
+        res = Fauna::Client.get("#{ref}/contains/#{resource.ref}")
+        Fauna.class_for_name(res.fauna_class).alloc(res.to_hash)
+      else
+        false
+      end
+    rescue Fauna::Connection::NotFound
+      false
     end
   end
 
